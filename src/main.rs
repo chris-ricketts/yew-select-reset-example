@@ -1,3 +1,4 @@
+use log::debug;
 use yew::components::Select;
 use yew::prelude::*;
 
@@ -37,8 +38,14 @@ impl Component for Model {
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::ChangeOption(SelectOption(option)) => self.selected_option = option,
-            Msg::Reset => self.selected_option = String::from(INITIAL_OPTION),
+            Msg::ChangeOption(SelectOption(option)) => {
+                debug!("Option changed: {}", option);
+                self.selected_option = option;
+            }
+            Msg::Reset => {
+                debug!("Resetting Select");
+                self.selected_option = String::from(INITIAL_OPTION)
+            }
         }
         true
     }
@@ -49,7 +56,7 @@ impl Renderable<Model> for Model {
         html! {
             <div>
                 <Select<SelectOption>
-                    selected=Some(SelectOption(self.selected_option.clone())),
+                    selected=Some(SelectOption(self.selected_option.clone()))
                     onchange=Msg::ChangeOption,
                     options=select_options()
                     />
@@ -67,6 +74,7 @@ fn select_options() -> Vec<SelectOption> {
 }
 
 fn main() {
+    web_logger::init();
     yew::initialize();
     App::<Model>::new().mount_to_body();
     yew::run_loop();
