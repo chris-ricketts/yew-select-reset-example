@@ -6,7 +6,6 @@ use yew::prelude::*;
 
 mod select;
 
-
 #[derive(Clone, Debug, PartialEq)]
 struct SelectOption(String);
 
@@ -41,14 +40,14 @@ impl Component for Model {
 
     fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
         Self {
-            selected_enum_option: None
+            selected_enum_option: Some(EnumOption::Apple),
         }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::ChangeEnumOption(option) => self.selected_enum_option = Some(option),
-            Msg::ResetEnum => self.selected_enum_option = Some(EnumOption::Apple)
+            Msg::ResetEnum => self.selected_enum_option = Some(EnumOption::Apple),
         }
         true
     }
@@ -74,14 +73,9 @@ impl Renderable<Model> for Model {
     }
 }
 
-
 fn main() {
     web_logger::init();
     yew::initialize();
     App::<Model>::new().mount_to_body();
     yew::run_loop();
 }
-
-
-
-
